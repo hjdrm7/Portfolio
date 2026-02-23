@@ -1,0 +1,1298 @@
+/* ============================================================
+   DESIGN TOKENS — CSS CUSTOM PROPERTIES
+   Dark mode values are set here as the default.
+   Light mode overrides them via [data-theme="light"].
+   ============================================================ */
+:root {
+  --bg:      #080d1a;          /* page background */
+  --bg2:     #0d1426;          /* slightly lighter surface */
+  --surface: #111827;          /* card/panel background */
+  --border:  rgba(255, 255, 255, 0.07); /* subtle border */
+  --text:    #e8eaf0;          /* primary text */
+  --muted:   #8892a4;          /* secondary / dimmed text */
+  --accent:  #3b82f6;          /* blue accent — buttons, highlights */
+  --accent2: #60a5fa;          /* lighter blue for hover states */
+}
+
+/* Light mode token overrides — swapped in when data-theme="light" */
+[data-theme="light"] {
+  --bg:      #f0f4ff;
+  --bg2:     #e8eef8;
+  --surface: #ffffff;
+  --border:  rgba(0, 0, 0, 0.08);
+  --text:    #0d1426;
+  --muted:   #5a6480;
+  --accent:  #2563eb;
+  --accent2: #3b82f6;
+}
+
+/* ============================================================
+   LIGHT MODE — CARD BACKGROUND SHAPE OVERRIDES
+   In light mode the background card needs bolder, more saturated
+   colors to be visible against the bright page background.
+   ============================================================ */
+
+/* Vivid indigo→purple→pink gradient for the tilted bg card */
+[data-theme="light"] .card-shadow-bg {
+  background: linear-gradient(
+    135deg,
+    rgba(79, 70, 229, 0.75) 0%,
+    rgba(139, 92, 246, 0.65) 50%,
+    rgba(236, 72, 153, 0.55) 100%
+  );
+  border: 2px solid rgba(79, 70, 229, 0.9);
+  box-shadow:
+    0 0 30px rgba(79, 70, 229, 0.75),   /* close tight glow */
+    0 0 70px rgba(139, 92, 246, 0.55),  /* mid-range bloom */
+    0 0 120px rgba(236, 72, 153, 0.35); /* far soft halo */
+}
+
+/* Brighter blurred glow blob in light mode */
+[data-theme="light"] .card-glow {
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.4) 0%,
+    rgba(139, 92, 246, 0.3) 50%,
+    rgba(236, 72, 153, 0.22) 100%
+  );
+  opacity: 1; /* fully visible in light mode */
+}
+
+/* Glow pulse keyframes for light mode — alternates between dim and bright */
+@keyframes bgCardGlowLight {
+  0% {
+    box-shadow:
+      0 0 30px rgba(79, 70, 229, 0.65),
+      0 0 65px rgba(139, 92, 246, 0.5),
+      0 0 110px rgba(236, 72, 153, 0.3);
+    border-color: rgba(79, 70, 229, 0.75);
+  }
+  100% {
+    box-shadow:
+      0 0 50px rgba(79, 70, 229, 0.9),
+      0 0 110px rgba(139, 92, 246, 0.75),
+      0 0 180px rgba(236, 72, 153, 0.5);
+    border-color: rgba(139, 92, 246, 1);
+  }
+}
+
+/* Apply both the rocking AND the glow pulse in light mode */
+[data-theme="light"] .card-shadow-bg {
+  animation: bgCardRock 5s ease-in-out infinite,
+             bgCardGlowLight 4s ease-in-out infinite alternate;
+}
+
+/* ============================================================
+   LIGHT MODE — CODE CARD
+   Switches from dark GitHub theme to a clean white editor look.
+   Syntax colors are re-tuned to stay readable on a light surface.
+   ============================================================ */
+[data-theme="light"] .code-card {
+  background: #f8f9fc;
+  border-color: rgba(79, 70, 229, 0.2);
+  box-shadow:
+    0 20px 60px rgba(99, 102, 241, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  transition: transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              box-shadow 0.9s ease,
+              border-color 0.9s ease,
+              background 0.4s ease;
+}
+
+[data-theme="light"] .code-header {
+  background: rgba(79, 70, 229, 0.04);
+  border-bottom-color: rgba(79, 70, 229, 0.1);
+}
+
+/* Light mode syntax token colors — VS Code Light+ inspired */
+[data-theme="light"] .c-comment { color: #6a737d; } /* comments — warm grey */
+[data-theme="light"] .c-kw      { color: #6f42c1; } /* keywords — purple */
+[data-theme="light"] .c-var     { color: #22863a; } /* variable — dark green */
+[data-theme="light"] .c-op      { color: #24292e; } /* operators — near black */
+[data-theme="light"] .c-key     { color: #005cc5; } /* object keys — blue */
+[data-theme="light"] .c-str     { color: #e36209; } /* strings — amber */
+[data-theme="light"] .c-arr     { color: #d63384; } /* array brackets — magenta */
+
+/* Smooth anchor scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ============================================================
+   GLOBAL RESET
+   Removes default margin/padding and enforces border-box sizing
+   so widths/heights include padding and border.
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ============================================================
+   BASE BODY
+   Sets font, background, text color and smooth theme transitions.
+   overflow-x hidden prevents horizontal scroll from animations.
+   ============================================================ */
+body {
+  font-family: 'Syne', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  transition: background 0.3s, color 0.3s; /* smooth dark/light switch */
+  overflow-x: hidden;
+}
+
+/* Faint dot-grid overlay drawn via pseudo-element.
+   Fixed so it stays in place while the page scrolls. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(59, 130, 246, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none; /* clicks pass through */
+  z-index: 0;
+}
+
+/* ============================================================
+   AMBIENT BACKGROUND BLOBS
+   Large blurred circles that create a soft colored glow in the
+   background. Fixed position so they don't scroll with content.
+   ============================================================ */
+.blob {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(120px);   /* heavy blur makes them look like ambient light */
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.18;
+  animation: blobFloat 8s ease-in-out infinite alternate;
+}
+
+/* Blue blob — top right */
+.blob-1 { width: 500px; height: 500px; background: #3b82f6; top: -100px; right: 10%; }
+/* Purple blob — bottom left, delayed so they move out of sync */
+.blob-2 { width: 400px; height: 400px; background: #8b5cf6; bottom: 0; left: 5%; animation-delay: 3s; }
+
+/* Blobs drift slightly up and scale — gives subtle life to the background */
+@keyframes blobFloat {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(30px, -30px) scale(1.08); }
+}
+
+/* ============================================================
+   NAVIGATION — FLOATING PILL DOCK
+   Centered at the top of the page. Floats above content using
+   fixed positioning and a high z-index.
+   ============================================================ */
+nav {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%); /* centers it regardless of viewport width */
+  z-index: 100;
+}
+
+/* The pill container — frosted glass effect via backdrop-filter */
+.dock {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  list-style: none;
+  background: rgba(18, 22, 36, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px; /* fully rounded pill shape */
+  padding: 8px 12px;
+  backdrop-filter: blur(20px); /* frosted glass blur */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4),
+              0 1px 0 rgba(255, 255, 255, 0.04) inset; /* subtle top highlight */
+  /* Slow, dramatic scale-up on hover */
+  transition: transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              box-shadow 0.9s ease;
+}
+
+/* Dock scales up slightly when hovered — slow and dramatic */
+.dock:hover {
+  transform: scale(1.06);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.55),
+              0 1px 0 rgba(255, 255, 255, 0.06) inset;
+}
+
+/* Light mode dock — lighter frosted background */
+[data-theme="light"] .dock {
+  background: rgba(240, 244, 255, 0.45);
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+/* Each icon slot — acts as positioning context for the tooltip */
+.dock-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Shared styles for both <a> links and <button> elements in the dock */
+.dock-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: var(--muted);       /* dimmed by default */
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  /* Icon color fades slowly; scale eases in with a smooth curve */
+  transition: color 0.6s ease,
+              transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* SVG icons inside dock buttons */
+.dock-btn svg {
+  width: 20px;
+  height: 20px;
+  pointer-events: none; /* prevents svg from capturing mouse events */
+}
+
+/* Material Symbols icon sizing and weight */
+.dock-btn .material-symbols-rounded {
+  font-size: 20px;
+  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+  pointer-events: none;
+  line-height: 1;
+}
+
+/* On hover — icon highlights and slowly zooms in */
+.dock-btn:hover {
+  color: var(--accent);       /* blue highlight */
+  transform: scale(1.35);     /* slow dramatic zoom */
+}
+
+/* ============================================================
+   DOCK TOOLTIP
+   Appears below each icon on hover. Bounces into view.
+   ============================================================ */
+.dock-label {
+  position: absolute;
+  top: calc(100% + 10px); /* sits just below the icon */
+  left: 50%;
+  transform: translateX(-50%) translateY(-4px); /* starts slightly above final pos */
+  background: var(--text);
+  color: var(--bg);
+  font-family: 'Syne', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  pointer-events: none; /* tooltip never blocks clicks */
+  opacity: 0;           /* hidden by default */
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* Tooltip plays a subtle bounce when it appears */
+.dock-item:hover .dock-label {
+  opacity: 1;
+  animation: tooltipBounce 0.4s ease forwards;
+}
+
+/* Bounces slightly past its target position then settles */
+@keyframes tooltipBounce {
+  0%   { opacity: 0; transform: translateX(-50%) translateY(-4px); }
+  60%  { opacity: 1; transform: translateX(-50%) translateY(2px); }  /* overshoots */
+  80%  {             transform: translateX(-50%) translateY(-1px); } /* pulls back */
+  100% {             transform: translateX(-50%) translateY(0); }    /* rests */
+}
+
+/* Thin vertical line separating nav sections (e.g. links | socials | theme) */
+.dock-divider {
+  width: 1px;
+  height: 22px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 0 6px;
+  border-radius: 1px;
+}
+
+[data-theme="light"] .dock-divider {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* Theme toggle button inherits all styles from .dock-btn */
+.theme-toggle {
+  /* styles handled by .dock-btn */
+}
+
+/* ============================================================
+   HERO LAYOUT
+   Full-height centered flex row — left text, right code card.
+   ============================================================ */
+main {
+  position: relative;
+  z-index: 1;           /* sits above the blob/grid background layers */
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6vw;
+  gap: 48px;
+}
+
+/* ============================================================
+   HERO LEFT — TEXT CONTENT
+   Fades up into view on page load via fadeUp animation.
+   ============================================================ */
+.hero-left {
+  flex: 0 1 480px;
+}
+
+/* Shared entrance animation — used by both hero-left and hero-right */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); } /* starts below */
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Monospaced greeting line above the name */
+.greeting {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.95rem;
+  color: var(--accent);
+  margin-bottom: 16px;
+  letter-spacing: 0.5px;
+}
+
+/* Large display name — clamp() scales between breakpoints */
+.hero-name {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2rem, 4.5vw, 4rem); /* responsive font size */
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -2px; /* tight tracking for display text */
+  margin-bottom: 16px;
+}
+
+/* The highlighted part of the name (last name) */
+.hero-name .highlight { color: var(--accent2); }
+
+/* Occupation label — small caps style */
+.hero-role {
+  color: var(--muted);
+  font-weight: 400;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+
+/* Short bio / tagline */
+.hero-desc {
+  font-size: 1rem;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 420px;
+  margin-bottom: 36px;
+}
+
+/* ============================================================
+   HERO ACTIONS — CTA BUTTON + SOCIAL ICONS ROW
+   ============================================================ */
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap; /* wraps gracefully on small screens */
+}
+
+/* Primary CTA button — "View Resume" */
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 10px;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+  box-shadow: 0 0 24px rgba(59, 130, 246, 0.3); /* glowing base shadow */
+}
+
+.btn-primary:hover {
+  background: var(--accent2);
+  transform: translateY(-2px);        /* lifts slightly */
+  box-shadow: 0 4px 32px rgba(59, 130, 246, 0.5); /* stronger glow on hover */
+}
+
+/* ============================================================
+   SOCIAL ICONS
+   Icon images (.social-img) are provided by the user as PNG/ICO files.
+   Place them in an icons/ folder and reference by filename.
+   ============================================================ */
+.socials {
+  display: flex;
+  gap: 16px;
+  margin-left: 8px;
+  align-items: center;
+}
+
+/* Each social icon link — dimmed at rest, full opacity on hover */
+.social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: transform 0.2s, opacity 0.2s;
+  opacity: 0.7; /* slightly dimmed by default */
+}
+
+.social-icon:hover {
+  transform: translateY(-3px); /* lifts up on hover */
+  opacity: 1;
+}
+
+/* The actual icon image — fixed size, preserves aspect ratio */
+.social-img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  display: block;
+}
+
+/* ============================================================
+   MATERIAL SYMBOLS — GOOGLE ICON FONT
+   Used for nav icons. Variable font axes control appearance.
+   FILL 0 = outline style | wght 300 = thin weight
+   ============================================================ */
+.material-symbols-rounded {
+  font-size: 20px;
+  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+  line-height: 1;
+  user-select: none; /* prevents text selection on click */
+}
+
+/* ============================================================
+   HERO RIGHT — CODE CARD WRAPPER
+   Contains three layers stacked behind the main card:
+     1. .card-shadow-bg — visible tilted duplicate shape
+     2. .card-glow      — blurred color blob (deepest)
+     3. .code-card      — the main foreground card
+   ============================================================ */
+.hero-right {
+  position: relative;   /* positioning context for absolute children */
+  flex: 0 0 430px;
+}
+
+/* ============================================================
+   CARD BACKGROUND SHAPE
+   An identical rounded rect placed behind the code card, rotated
+   at 13° and filled with a gradient. Rocks back and forth
+   continuously. Glow intensifies on hover — but NO zoom/scale.
+   ============================================================ */
+.card-shadow-bg {
+  position: absolute;
+  inset: 0;             /* matches code card dimensions exactly */
+  border-radius: 14px;
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.28) 0%,   /* blue */
+    rgba(99, 102, 241, 0.22) 50%,  /* indigo */
+    rgba(139, 92, 246, 0.18) 100%  /* purple */
+  );
+  border: 2px solid rgba(99, 140, 255, 0.45);
+  z-index: -2;           /* behind code card, but in front of glow blob */
+  pointer-events: none;  /* never intercepts mouse events */
+  box-shadow:
+    0 0 22px rgba(59, 130, 246, 0.45),  /* tight inner glow */
+    0 0 55px rgba(99, 102, 241, 0.28),  /* mid bloom */
+    0 0 100px rgba(139, 92, 246, 0.16); /* far soft halo */
+  /* Rocking animation only — no scale */
+  animation: bgCardRock 5s ease-in-out infinite;
+  /* Smooth transitions for glow/color changes on hover */
+  transition: box-shadow 0.9s ease, border-color 0.9s ease, background 0.9s ease;
+}
+
+/* Rocks between 13° and 9° with no scale change — pure rotation */
+@keyframes bgCardRock {
+  0%   { transform: rotate(13deg); }
+  50%  { transform: rotate(9deg);  }
+  100% { transform: rotate(13deg); }
+}
+
+/* Dark mode glow pulse — box-shadow brightens and dims over time.
+   Not currently applied via animation property but available to use. */
+@keyframes bgCardGlow {
+  0% {
+    box-shadow:
+      0 0 22px rgba(59, 130, 246, 0.4),
+      0 0 50px rgba(99, 102, 241, 0.25),
+      0 0 90px rgba(139, 92, 246, 0.14);
+    border-color: rgba(99, 140, 255, 0.38);
+  }
+  100% {
+    box-shadow:
+      0 0 40px rgba(59, 130, 246, 0.65),
+      0 0 85px rgba(99, 102, 241, 0.45),
+      0 0 140px rgba(139, 92, 246, 0.28);
+    border-color: rgba(99, 140, 255, 0.65);
+  }
+}
+
+/* On hover — glow and border intensify. Rotation continues via animation.
+   No transform here so the rocking animation isn't interrupted. */
+.hero-right:hover .card-shadow-bg {
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.38) 0%,
+    rgba(99, 102, 241, 0.3) 50%,
+    rgba(139, 92, 246, 0.24) 100%
+  );
+  border-color: rgba(99, 140, 255, 0.65);
+  box-shadow:
+    0 0 40px rgba(59, 130, 246, 0.65),
+    0 0 85px rgba(99, 102, 241, 0.45),
+    0 0 140px rgba(139, 92, 246, 0.28);
+}
+
+/* Light mode hover — only a gentle brightness/glow bump, no color shift */
+[data-theme="light"] .hero-right:hover .card-shadow-bg {
+  background: linear-gradient(
+    135deg,
+    rgba(79, 70, 229, 0.82) 0%,
+    rgba(139, 92, 246, 0.72) 50%,
+    rgba(236, 72, 153, 0.60) 100%
+  );
+  border-color: rgba(79, 70, 229, 0.95);
+  box-shadow:
+    0 0 36px rgba(79, 70, 229, 0.82),
+    0 0 80px rgba(139, 92, 246, 0.62),
+    0 0 130px rgba(236, 72, 153, 0.4);
+}
+
+/* ============================================================
+   CARD GLOW BLOB
+   Deepest layer — a blurred gradient that creates a soft ambient
+   light effect around the entire card group.
+   ============================================================ */
+.card-glow {
+  position: absolute;
+  inset: -20px;          /* extends beyond the card edges */
+  border-radius: 22px;
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.3) 0%,
+    rgba(139, 92, 246, 0.22) 50%,
+    rgba(236, 72, 153, 0.14) 100%
+  );
+  filter: blur(28px);    /* heavy blur for soft ambient glow */
+  transform: rotate(-2.5deg) scaleX(0.97); /* slightly tilted for natural look */
+  z-index: -3;           /* deepest layer — behind everything */
+  animation: glowBreath 5s ease-in-out infinite alternate;
+}
+
+/* Glow blob slowly breathes — opacity and slight tilt shift */
+@keyframes glowBreath {
+  0%   { opacity: 0.5; transform: rotate(-2.5deg) scaleX(0.97); }
+  100% { opacity: 0.8; transform: rotate(-1deg) scaleX(1.01); }
+}
+
+/* ============================================================
+   CODE CARD — MAIN FOREGROUND CARD
+   Dark editor-style card with syntax-highlighted content.
+   Scales up on hover (zoom out = card gets bigger toward viewer).
+   ============================================================ */
+.code-card {
+  background: #0d1117;   /* dark GitHub-style editor background */
+  border: 1.5px solid rgba(99, 140, 255, 0.18);
+  border-radius: 14px;
+  overflow: hidden;       /* clips shimmer sweep pseudo-element */
+  position: relative;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04); /* subtle top inner highlight */
+  /* Slow, smooth scale transition */
+  transition: transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              box-shadow 0.9s ease,
+              border-color 0.9s ease;
+  cursor: default;
+  transform-origin: center center; /* scales from the center */
+}
+
+/* Card zooms out (gets bigger) on hover — no translation, pure scale */
+.code-card:hover {
+  transform: scale(1.05);
+  box-shadow:
+    0 28px 80px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  border-color: rgba(99, 140, 255, 0.28);
+}
+
+/* Diagonal shimmer streak that sweeps across the card on hover */
+.code-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -75%;   /* starts off-screen to the left */
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.035) 50%,  /* very subtle white streak */
+    transparent 100%
+  );
+  transform: skewX(-20deg); /* angled for diagonal sweep */
+  transition: left 0.7s ease;
+  pointer-events: none;
+  z-index: 1;            /* above card content, below nothing */
+}
+
+/* Shimmer slides across to the right when hovered */
+.code-card:hover::before { left: 150%; }
+
+/* ============================================================
+   CODE CARD HEADER
+   Contains the macOS-style window dots and filename label.
+   ============================================================ */
+.code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid rgba(99, 140, 255, 0.1);
+  background: rgba(255, 255, 255, 0.015); /* very subtle header tint */
+}
+
+/* macOS-style traffic light dots row */
+.dots { display: flex; gap: 6px; }
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.dot-r { background: #ff5f57; } /* red — close */
+.dot-y { background: #febc2e; } /* yellow — minimize */
+.dot-g { background: #28c840; } /* green — maximize */
+
+/* File name displayed in the header bar */
+.code-filename {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+/* ============================================================
+   CODE BODY — SYNTAX-HIGHLIGHTED CONTENT
+   Each span class represents a token type in the JS object.
+   ============================================================ */
+.code-body {
+  padding: 28px 28px 28px 24px;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.83rem;
+  line-height: 2; /* generous line height for readability */
+}
+
+.c-comment { color: #546e7a; } /* // comments — slate */
+.c-kw      { color: #7c6af7; } /* keywords (const) — purple */
+.c-var     { color: #4ade80; } /* variable name — green */
+.c-op      { color: #cbd5e1; } /* operators/punctuation — light grey */
+.c-key     { color: #60a5fa; } /* object keys — blue */
+.c-str     { color: #fb923c; } /* string values — orange */
+.c-arr     { color: #f472b6; } /* array brackets — pink */
+.indent    { padding-left: 28px; } /* indented object properties */
+
+/* ============================================================
+   CODE LINE — STAGGERED ENTRANCE ANIMATION
+   Lines start invisible and slide in from the left via JS,
+   which adds the .visible class with staggered setTimeout delays.
+   ============================================================ */
+.code-line {
+  transform: translateX(-10px); /* starts slightly to the left */
+  opacity: 0;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+/* JS adds this class to trigger the animation */
+.code-line.visible {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+/* ============================================================
+   BLINKING CURSOR
+   Appears at the end of the last code line.
+   Mimics a real text editor cursor.
+   ============================================================ */
+.cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: var(--accent);
+  animation: blink 1s step-end infinite; /* hard on/off — no fade */
+  vertical-align: text-bottom;
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; } /* visible */
+  50%       { opacity: 0; } /* hidden */
+}
+
+/* ============================================================
+   ABOUT ME SECTION
+   Full-width section below the hero. Dark card surface with
+   a two-column grid: profile left, details right.
+   ============================================================ */
+/* ============================================================
+   SECTION TRANSITION
+   Each <section> and <main> starts clipped and slightly scaled
+   down. When it enters the viewport, .section-visible is added
+   by JS to trigger the entrance animation.
+   ============================================================ */
+.section-animate {
+  opacity: 0;
+  transform: translateY(50px) scale(0.98);
+  transition:
+    opacity   0.75s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.75s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: opacity, transform;
+}
+
+.section-animate.section-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.about-section {
+  position: relative;
+  z-index: 1;
+  padding: 100px 6vw 80px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* ============================================================
+   SCROLL ENTRANCE ANIMATION
+   Elements start invisible and slide up. The IntersectionObserver
+   in JS adds .in-view when the element enters the viewport.
+   ============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(36px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+
+.reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-36px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.reveal-left.in-view {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(36px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.reveal-right.in-view {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ============================================================
+   SECTION EYEBROW LABEL — "GET TO KNOW ME"
+   Has its own typing animation — does NOT use .reveal opacity.
+   Instead it starts with width: 0 and animates to full width.
+   ============================================================ */
+.section-eyebrow {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text);
+  text-align: center;
+  margin-bottom: 14px;
+  display: block;
+  max-width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid transparent;
+  opacity: 1;
+  transform: none;
+  transition: none;
+
+  /* Start empty — JS will type characters in one by one */
+}
+
+/* Cursor blink — added by JS once typing starts */
+.section-eyebrow.typing {
+  border-color: var(--text);
+  animation: eyebrowCursor 0.6s step-end infinite;
+}
+
+/* Cursor off — added by JS after typing finishes */
+.section-eyebrow.done {
+  animation: none;
+  border-color: transparent;
+}
+
+@keyframes eyebrowCursor {
+  0%, 100% { border-color: var(--text); }
+  50%      { border-color: transparent; }
+}
+
+/* Section title — centered, Outfit Bold */
+.section-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 56px;
+  letter-spacing: -0.5px;
+  text-align: center;
+}
+
+/* "About Me" words — animated gradient */
+.section-title .highlight {
+  background: linear-gradient(
+    90deg,
+    #3b82f6,
+    #8b5cf6,
+    #ec4899,
+    #f59e0b,
+    #3b82f6
+  );
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 15s linear infinite;
+}
+
+@keyframes gradientShift {
+  0%   { background-position: 0% center; }
+  100% { background-position: 300% center; }
+}
+
+/* Two-column grid: narrow left | thin divider | wide right */
+.about-grid {
+  display: grid;
+  grid-template-columns: 280px 1px 1fr;
+  gap: 0 48px;
+}
+
+/* ---- LEFT COLUMN ---- */
+.about-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 24px;
+}
+
+/* Circular avatar with a glowing ring */
+.about-avatar-wrap {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  padding: 3px;
+  background: linear-gradient(135deg, var(--accent), #8b5cf6);
+  box-shadow: 0 0 32px rgba(59, 130, 246, 0.35);
+  flex-shrink: 0;
+}
+
+.about-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  background: var(--surface); /* fallback if image missing */
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              filter 0.4s ease;
+}
+
+/* Avatar wrap scales up and ring glows brighter on hover */
+.about-avatar-wrap {
+  transition: box-shadow 0.4s ease, transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: default;
+}
+
+.about-avatar-wrap:hover {
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.5),
+              0 0 40px rgba(59, 130, 246, 0.6),
+              0 0 80px rgba(139, 92, 246, 0.3);
+  transform: scale(1.06);
+}
+
+.about-avatar-wrap:hover .about-avatar {
+  transform: scale(1.08);
+  filter: brightness(1.08) saturate(1.15);
+}
+
+/* Bio paragraph */
+.about-bio {
+  font-size: 0.92rem;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+/* Location row */
+.about-location {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-family: 'Fira Code', monospace;
+  border-top: 1px solid var(--border);
+  padding-top: 20px;
+  width: 100%;
+  justify-content: center;
+}
+
+.about-location .material-symbols-rounded {
+  font-size: 16px;
+  color: var(--accent);
+}
+
+/* ---- VERTICAL DIVIDER ---- */
+.about-divider {
+  background: var(--border);
+  border-radius: 1px;
+  align-self: stretch;
+}
+
+/* ---- RIGHT COLUMN ---- */
+.about-right {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Each block: Education / Experience / Tech Stack */
+.about-block {
+  margin-bottom: 4px;
+}
+
+.about-block-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 14px;
+  letter-spacing: 0.2px;
+}
+
+/* Horizontal rule between blocks */
+.about-block-sep {
+  height: 1px;
+  background: var(--border);
+  margin: 20px 0;
+}
+
+/* Entry row: name on left, year on right */
+.about-entry-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.about-entry-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+.about-entry-year {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.78rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* Sub-row: degree on left, grade on right */
+.about-entry-sub {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 0.87rem;
+  color: var(--muted);
+  gap: 12px;
+}
+
+.about-entry-grade {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.78rem;
+  color: var(--accent2);
+  white-space: nowrap;
+}
+
+/* Bullet list for experience items — left border accent */
+.about-bullets {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.about-bullets li {
+  font-size: 0.87rem;
+  color: var(--muted);
+  padding-left: 16px;
+  border-left: 2px solid rgba(59, 130, 246, 0.45);
+  line-height: 1.6;
+}
+
+/* ---- TECH STACK TAGS ---- */
+.tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+/* Individual pill tag */
+.tech-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+  font-family: 'Fira Code', monospace;
+  font-size: 0.78rem;
+  color: var(--muted);
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  cursor: default;
+}
+
+.tech-tag:hover {
+  border-color: rgba(59, 130, 246, 0.5);
+  color: var(--text);
+  background: rgba(59, 130, 246, 0.06);
+}
+
+/* Colored dot inside each tag */
+.tech-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dot-html   { background: #e34c26; }
+.dot-css    { background: #264de4; }
+.dot-js     { background: #f7df1e; }
+.dot-python { background: #3b82f6; }
+.dot-java   { background: #f89820; }
+.dot-c      { background: #00599c; }
+.dot-mysql  { background: #00758f; }
+.dot-ps     { background: #31a8ff; }
+.dot-canva  { background: #00c4cc; }
+.dot-corel  { background: #8cc63f; }
+
+/* Know More button — reuses btn-primary, slightly offset */
+.about-know-more {
+  margin-top: 24px;
+  align-self: flex-start;
+}
+
+/* ============================================================
+   RESPONSIVE — MOBILE / TABLET
+   Below 900px the layout stacks vertically.
+   ============================================================ */
+@media (max-width: 900px) {
+  main {
+    flex-direction: column;        /* stack left and right panels */
+    padding: 120px 6vw 60px;      /* top padding clears the fixed nav */
+    gap: 40px;
+    align-items: flex-start;
+  }
+  .hero-right { flex: none; width: 100%; } /* code card fills full width */
+  nav { padding: 0 24px; }
+  .nav-links { gap: 20px; }
+
+  /* About section — stack to single column on mobile */
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 32px 0;
+    padding: 32px 24px;
+  }
+  .about-divider {
+    height: 1px;
+    width: 100%;
+  }
+  .about-left {
+    align-items: flex-start;
+    text-align: left;
+  }
+  .about-location {
+    justify-content: flex-start;
+  }
+}
+
+/* ============================================================
+   MOUSE CODE TRAIL
+   Small Fira Code snippets that spawn at cursor position,
+   float upward, and fade out — gradient text, non-intrusive.
+   ============================================================ */
+.code-trail {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.65rem;
+  font-weight: 400;
+  white-space: nowrap;
+  user-select: none;
+
+  /* Gradient text via background-clip */
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+
+  animation:
+    trailFloat    1.2s ease-out forwards,
+    trailGradient 1.2s linear  forwards;
+}
+
+@keyframes trailFloat {
+  0%   { opacity: 0.75; transform: translateY(0)    scale(1);    }
+  40%  { opacity: 0.5;  transform: translateY(-18px) scale(0.95); }
+  100% { opacity: 0;    transform: translateY(-40px) scale(0.85); }
+}
+
+@keyframes trailGradient {
+  0%   { background-position: 0%   center; }
+  100% { background-position: 200% center; }
+}
+
+/* ============================================================
+   BACK TO TOP BUTTON
+   Fixed bottom-right, hidden until user scrolls down.
+   ============================================================ */
+.back-to-top {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  z-index: 1000;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.3s ease, transform 0.3s ease, background 0.2s ease, border-color 0.2s ease;
+  pointer-events: none;
+  backdrop-filter: blur(12px);
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.back-to-top:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.back-to-top svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.2s ease;
+}
+
+.back-to-top:hover svg {
+  transform: translateY(-2px);
+}
+
+/* ============================================================
+   SCROLL DOWN HINT
+   Sits at the bottom of the hero, fades out on scroll.
+   ============================================================ */
+.scroll-hint {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.scroll-hint.hidden {
+  opacity: 0;
+}
+
+.scroll-hint-text {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.scroll-hint-arrow {
+  width: 20px;
+  height: 20px;
+  stroke: var(--muted);
+  stroke-width: 1.8;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  animation: scrollBounce 1.6s ease-in-out infinite;
+}
+
+@keyframes scrollBounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(6px); }
+}

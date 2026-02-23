@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jude Arom F. Dominguez – IT Student</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Syne:wght@400;700&family=Outfit:wght@600;800&display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="script.js"></script>
+</head>
+
+<body>
+
+  <!-- Background blobs -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+
+  <!-- Navigation: floating pill dock -->
+  <nav>
+    <ul class="dock">
+
+      <!-- Home -->
+      <li class="dock-item">
+        <a href="#home" class="dock-btn" aria-label="Home">
+          <span class="material-symbols-rounded">home</span>
+        </a>
+        <span class="dock-label">Home</span>
+      </li>
+
+      <!-- About -->
+      <li class="dock-item">
+        <a href="#about" class="dock-btn" aria-label="About">
+          <span class="material-symbols-rounded">person</span>
+        </a>
+        <span class="dock-label">About</span>
+      </li>
+
+      <!-- Projects -->
+      <li class="dock-item">
+        <a href="#projects" class="dock-btn" aria-label="Projects">
+          <span class="material-symbols-rounded">code</span>
+        </a>
+        <span class="dock-label">Projects</span>
+      </li>
+
+      <!-- Contact Me -->
+      <li class="dock-item">
+        <a href="#contact" class="dock-btn" aria-label="Contact">
+          <span class="material-symbols-rounded">chat_bubble</span>
+        </a>
+        <span class="dock-label">Contact</span>
+      </li>
+
+      <!-- Divider -->
+      <li class="dock-divider" aria-hidden="true"></li>
+
+      <!-- Email -->
+      <li class="dock-item">
+        <a href="/cdn-cgi/l/email-protection#6c0d0d1804050a2c09140d011c0009420f0301" class="dock-btn" aria-label="Email">
+          <span class="material-symbols-rounded">mail</span>
+        </a>
+        <span class="dock-label">Email</span>
+      </li>
+
+      <!-- GitHub (SVG — no Material icon equivalent) -->
+      <li class="dock-item">
+        <a href="#" class="dock-btn" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+            <path
+              d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12" />
+          </svg>
+        </a>
+        <span class="dock-label">GitHub</span>
+      </li>
+
+      <!-- Divider -->
+      <li class="dock-divider" aria-hidden="true"></li>
+
+      <!-- Theme toggle — morphing moon ↔ sun -->
+      <li class="dock-item">
+        <button class="dock-btn theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme" id="theme-btn">
+          <svg id="theme-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+            stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+            <path id="moon-path" d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z" opacity="0" />
+            <circle id="sun-circle" cx="12" cy="12" r="5" opacity="1" />
+            <g id="sun-rays" opacity="1">
+              <line x1="12" y1="1" x2="12" y2="3" />
+              <line x1="12" y1="21" x2="12" y2="23" />
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+              <line x1="1" y1="12" x2="3" y2="12" />
+              <line x1="21" y1="12" x2="23" y2="12" />
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+            </g>
+          </svg>
+        </button>
+        <span class="dock-label" id="theme-label">Light Mode</span>
+      </li>
+
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <main id="home" class="section-animate section-visible">
+
+    <!-- Scroll down hint -->
+    <div class="scroll-hint" id="scroll-hint">
+      <span class="scroll-hint-text">scroll down</span>
+      <svg class="scroll-hint-arrow" viewBox="0 0 24 24">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </div>
+
+    <!-- Left: text content -->
+    <div class="hero-left reveal-left">
+      <p class="greeting">// Hello! I'm</p>
+      <!-- Name uses data-text for the hacker decode effect via JS -->
+      <h1 class="hero-name">
+        <span class="decode-word" data-text="Jude Arom">Jude Arom</span><br>
+        <span class="decode-word highlight" data-text="Dominguez">Dominguez</span>
+      </h1>
+      <p class="hero-role">IT Student</p>
+      <p class="hero-desc">Crafting creative designs and building reliable code — from pixels to programs.</p>
+
+      <div class="hero-actions">
+        <a href="#" class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+          </svg>
+          View Resume
+        </a>
+
+        <div class="socials">
+
+          <!-- GITHUB ICON
+               Place your file at:  icons/github.png  (or .ico / .svg)
+               Update the src below to match your filename. -->
+          <a href="#" class="social-icon" title="GitHub">
+            <img src="icons/github.png" alt="GitHub" class="social-img" />
+          </a>
+
+          <!-- DISCORD ICON
+               Place your file at:  icons/discord.png -->
+          <a href="#" class="social-icon" title="Discord">
+            <img src="icons/discord.png" alt="Discord" class="social-img" />
+          </a>
+
+          <!-- FACEBOOK ICON
+               Place your file at:  icons/facebook.png -->
+          <a href="#" class="social-icon" title="Facebook">
+            <img src="icons/facebook.png" alt="Facebook" class="social-img" />
+          </a>
+
+          <!-- INSTAGRAM ICON
+               Place your file at:  icons/instagram.png -->
+          <a href="#" class="social-icon" title="Instagram">
+            <img src="icons/instagram.png" alt="Instagram" class="social-img" />
+          </a>
+
+          <!-- EMAIL ICON
+               Place your file at:  icons/email.png -->
+          <a href="/cdn-cgi/l/email-protection#a2c3c3d6cacbc4e2c7dac3cfd2cec78cc1cdcf" class="social-icon"
+            title="Email">
+            <img src="icons/email.png" alt="Email" class="social-img" />
+          </a>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: code card -->
+    <div class="hero-right reveal-right">
+
+      <!-- Identical card shape tilted 25deg behind -->
+      <div class="card-shadow-bg"></div>
+
+      <!-- Animated background glow shaped like the card -->
+      <div class="card-glow"></div>
+
+      <div class="code-card">
+        <div class="code-header">
+          <div class="dots">
+            <div class="dot dot-r"></div>
+            <div class="dot dot-y"></div>
+            <div class="dot dot-g"></div>
+          </div>
+          <span class="code-filename">developer.js</span>
+        </div>
+        <div class="code-body">
+          <div class="code-line"><span class="c-comment">// IT Student</span></div>
+          <div class="code-line"><span class="c-kw">const</span> <span class="c-var">developer</span> <span
+              class="c-op">= {</span></div>
+          <div class="code-line indent"><span class="c-key">name</span><span class="c-op">:</span> <span
+              class="c-str">'Jude Arom F. Dominguez'</span><span class="c-op">,</span></div>
+          <div class="code-line indent"><span class="c-key">skills</span><span class="c-op">:</span> <span
+              class="c-arr">[</span><span class="c-str">'Python'</span><span class="c-op">,</span> <span
+              class="c-str">'Java'</span><span class="c-op">,</span> <span class="c-str">'C/C++'</span><span
+              class="c-arr">]</span><span class="c-op">,</span></div>
+          <div class="code-line indent"><span class="c-key">design</span><span class="c-op">:</span> <span
+              class="c-arr">[</span><span class="c-str">'Photoshop'</span><span class="c-op">,</span> <span
+              class="c-str">'Canva'</span><span
+              class="c-arr">]</span><span class="c-op">,</span></div>
+          <div class="code-line indent"><span class="c-key">learning</span><span class="c-op">:</span> <span
+              class="c-str">'Always'</span></div>
+          <div class="code-line"><span class="c-op">};</span><span class="cursor"></span></div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ============================================================
+       ABOUT ME SECTION
+       ============================================================ -->
+  <section class="about-section section-animate" id="about">
+
+    <span class="section-eyebrow reveal" data-text="GET TO KNOW ME">GET TO KNOW ME</span>
+    <h2 class="section-title reveal">// <span class="highlight">About Me</span></h2>
+
+    <div class="about-grid">
+
+      <!-- LEFT — profile photo + bio + location -->
+      <div class="about-left reveal-left">
+        <div class="about-avatar-wrap">
+          <img src="icons/avatar.png" alt="Jude Arom Dominguez" class="about-avatar" />
+        </div>
+
+        <p class="about-bio">
+          I'm an IT student with a passion for both design and development.
+          I enjoy creating visual content using tools like Photoshop and CorelDRAW,
+          and building functional programs with Python, Java, and C/C++. I'm always
+          looking for opportunities to grow and apply my skills in real-world projects.
+        </p>
+
+        <div class="about-location">
+          <span class="material-symbols-rounded">location_on</span>
+          Oroquieta City, Philippines
+        </div>
+      </div>
+
+      <!-- VERTICAL DIVIDER -->
+      <div class="about-divider"></div>
+
+      <!-- RIGHT — education, experience, tech stack -->
+      <div class="about-right reveal-right">
+
+        <!-- Education -->
+        <div class="about-block">
+          <h3 class="about-block-title">Education</h3>
+          <div class="about-entry">
+            <div class="about-entry-main">
+              <span class="about-entry-name">University of Science and Technology of Southern Philippines</span>
+              <span class="about-entry-year">2023 – Present</span>
+            </div>
+            <div class="about-entry-sub">
+              <span>Bachelor of Science in Information Technology</span>
+              <span class="about-entry-grade">GWA: 1.75</span>
+            </div>
+          </div>
+          <div class="about-block-sep"></div>
+        </div>
+
+        <!-- Experience -->
+        <div class="about-block">
+          <h3 class="about-block-title">Experience</h3>
+          <div class="about-entry">
+            <div class="about-entry-main">
+              <span class="about-entry-name">IT Student / Self-taught Developer</span>
+              <span class="about-entry-year">2023 – Present</span>
+            </div>
+            <ul class="about-bullets">
+              <li>Developed programs and projects using Python, Java, and C/C++</li>
+              <li>Built web pages with HTML, CSS, and JavaScript</li>
+              <li>Created visual content and graphics using Photoshop, Canva, and CorelDRAW</li>
+              <li>Managed and queried databases using MySQL</li>
+            </ul>
+          </div>
+          <div class="about-block-sep"></div>
+        </div>
+
+        <!-- Tech Stack -->
+        <div class="about-block">
+          <h3 class="about-block-title">Tech Stack</h3>
+          <div class="tech-tags">
+            <span class="tech-tag"><span class="tech-dot dot-html"></span>HTML</span>
+            <span class="tech-tag"><span class="tech-dot dot-css"></span>CSS</span>
+            <span class="tech-tag"><span class="tech-dot dot-js"></span>JavaScript</span>
+            <span class="tech-tag"><span class="tech-dot dot-python"></span>Python</span>
+            <span class="tech-tag"><span class="tech-dot dot-java"></span>Java</span>
+            <span class="tech-tag"><span class="tech-dot dot-c"></span>C/C++</span>
+            <span class="tech-tag"><span class="tech-dot dot-mysql"></span>MySQL</span>
+            <span class="tech-tag"><span class="tech-dot dot-ps"></span>Photoshop</span>
+            <span class="tech-tag"><span class="tech-dot dot-canva"></span>Canva</span>
+          </div>
+        </div>
+
+        <!-- Know More button -->
+        <a href="#" class="btn-primary about-know-more">
+          <span class="material-symbols-rounded">arrow_forward</span>
+          Know More
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Back to top -->
+  <button class="back-to-top" id="back-to-top" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"></polyline></svg>
+  </button>
+
+  <script src="script.js"></script>
+</body>
+</html>
