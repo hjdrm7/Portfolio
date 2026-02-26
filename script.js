@@ -345,3 +345,29 @@ document.addEventListener("DOMContentLoaded", () => {
     window.scrollTo({ top, behavior: "smooth" });
   });
 });
+/* ============================================================
+   PROJ-RIGHT Z-INDEX FIX
+   Keeps z-index elevated until the return animation completes
+   so the preview never dips under sibling cards mid-transition.
+   ============================================================ */
+document.addEventListener('DOMContentLoaded', () => {
+  const TRANSITION_MS = 600; /* match the CSS transition duration */
+
+  document.querySelectorAll('.proj-right').forEach(right => {
+    let resetTimer = null;
+
+    right.addEventListener('mouseenter', () => {
+      clearTimeout(resetTimer);
+      right.style.zIndex = '9999';
+      right.style.overflow = 'visible';
+    });
+
+    right.addEventListener('mouseleave', () => {
+      /* Wait for return animation to finish before resetting */
+      resetTimer = setTimeout(() => {
+        right.style.zIndex = '';
+        right.style.overflow = 'hidden';
+      }, TRANSITION_MS);
+    });
+  });
+});
