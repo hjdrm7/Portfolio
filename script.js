@@ -330,3 +330,18 @@ window.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll(); /* run on load for restored scroll positions */
 })();
+/* ============================================================
+   CONTACT NAV — precise scroll with enough room at bottom
+   ============================================================ */
+document.addEventListener("DOMContentLoaded", () => {
+  const contactLink = document.querySelector("a.dock-btn[href='#contact']");
+  if (!contactLink) return;
+
+  contactLink.addEventListener("click", (e) => {
+    e.preventDefault();
+    const el = document.getElementById("contact");
+    if (!el) return;
+    const top = el.getBoundingClientRect().top + window.scrollY - 60;
+    window.scrollTo({ top, behavior: "smooth" });
+  });
+});
