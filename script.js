@@ -306,30 +306,7 @@ window.addEventListener('DOMContentLoaded', () => {
   }, 120);
 })();
 
-/* ============================================================
-   BACK TO TOP + SCROLL HINT
-   ============================================================ */
-(function () {
-  const btn       = document.getElementById('back-to-top');
-  const hint      = document.getElementById('scroll-hint');
-  const heroEl    = document.getElementById('home');
 
-  function onScroll() {
-    const y = window.scrollY;
-
-    /* Back to top: show after scrolling 300px */
-    if (btn) btn.classList.toggle('visible', y > 300);
-
-    /* Scroll hint: hide when scrolled, show when back at hero */
-    if (hint && heroEl) {
-      const heroBottom = heroEl.getBoundingClientRect().bottom;
-      hint.classList.toggle('hidden', heroBottom < window.innerHeight * 0.5);
-    }
-  }
-
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll(); /* run on load for restored scroll positions */
-})();
 /* ============================================================
    CONTACT NAV — precise scroll with enough room at bottom
    ============================================================ */
@@ -343,8 +320,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!el) return;
     const top = el.getBoundingClientRect().top + window.scrollY - 60;
     window.scrollTo({ top, behavior: "smooth" });
+    history.pushState(null, "", "#contact");
   });
-});
+}); 
+
 /* ============================================================
    PROJ-RIGHT Z-INDEX FIX
    Keeps z-index elevated until the return animation completes
