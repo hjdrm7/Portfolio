@@ -325,6 +325,52 @@ document.addEventListener("DOMContentLoaded", () => {
 }); 
 
 /* ============================================================
+   FOOTER WORD CYCLE
+   New word rises up pushing the current word out — both animate
+   simultaneously so the old word vanishes as it's pushed up.
+   Container is sized to the longest word via a hidden sizer span.
+   ============================================================ */
+(function () {
+  const WORDS = ['create', 'build', 'design', 'make', 'code'];
+  let index = 0;
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('footer-cycle-word');
+    if (!container) return;
+
+    /* Find longest word and use it as the invisible sizer */
+    const longest = WORDS.reduce((a, b) => a.length >= b.length ? a : b);
+    const sizer = document.createElement('span');
+    sizer.className = 'word-sizer';
+    sizer.textContent = longest;
+    container.textContent = '';
+    container.appendChild(sizer);
+
+    /* First visible word */
+    const initial = document.createElement('span');
+    initial.textContent = WORDS[0];
+    container.appendChild(initial);
+
+    setInterval(() => {
+      index = (index + 1) % WORDS.length;
+
+      const exiting = container.querySelector('span:not(.word-sizer):not(.word-exit)');
+      if (!exiting) return;
+
+      const entering = document.createElement('span');
+      entering.textContent = WORDS[index];
+
+      exiting.classList.add('word-exit');
+      entering.classList.add('word-enter');
+      container.appendChild(entering);
+
+      exiting.addEventListener('animationend', () => exiting.remove(), { once: true });
+
+    }, 2000);
+  });
+})();
+
+/* ============================================================
    PROJ-RIGHT Z-INDEX FIX
    Keeps z-index elevated until the return animation completes
    so the preview never dips under sibling cards mid-transition.

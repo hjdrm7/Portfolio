@@ -2079,6 +2079,48 @@ main {
   letter-spacing: -0.02em;
 }
 
+.footer-cycle-word {
+  display: inline-block;
+  position: relative;
+  color: #fff;
+  vertical-align: bottom;
+  overflow: visible;
+}
+
+.footer-cycle-word .word-sizer {
+  display: inline-block;
+  visibility: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+.footer-cycle-word span:not(.word-sizer) {
+  display: inline-block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  white-space: nowrap;
+}
+
+@keyframes word-enter {
+  0%   { opacity: 0; transform: translateY(40%); filter: blur(6px); }
+  100% { opacity: 1; transform: translateY(0%);  filter: blur(0px); }
+}
+
+@keyframes word-exit {
+  0%   { opacity: 0.5; transform: translateY(0%);    filter: blur(0px); color: rgba(255,255,255,0.35); }
+  100% { opacity: 0;   transform: translateY(-90%);  filter: blur(5px); color: rgba(255,255,255,0.1);  }
+}
+
+.footer-cycle-word .word-enter {
+  animation: word-enter 0.55s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.footer-cycle-word .word-exit {
+  animation: word-exit 0.55s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  color: rgba(255,255,255,0.45);
+}
+
 .footer-together {
   font-family: 'Syne', sans-serif;
   font-size: clamp(1.5rem, 3.5vw, 2.5rem);
