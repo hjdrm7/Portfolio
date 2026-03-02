@@ -23,7 +23,7 @@
     sessionStorage.setItem(KEY, window.scrollY);
   }, { passive: true });
 })();
-  /* ============================================================ */
+/* ============================================================ */
 (function () {
   const saved = localStorage.getItem('theme');
   if (saved) document.documentElement.setAttribute('data-theme', saved);
@@ -34,24 +34,24 @@
    Called on load and on toggle to keep icon matching theme.
    ============================================================ */
 function applyThemeIcon(theme) {
-  const moonPath   = document.getElementById('moon-path');
-  const sunCircle  = document.getElementById('sun-circle');
-  const sunRays    = document.getElementById('sun-rays');
+  const moonPath = document.getElementById('moon-path');
+  const sunCircle = document.getElementById('sun-circle');
+  const sunRays = document.getElementById('sun-rays');
   const themeLabel = document.getElementById('theme-label');
-  const themeBtn   = document.getElementById('theme-btn');
+  const themeBtn = document.getElementById('theme-btn');
   if (!moonPath) return;
 
   if (theme === 'dark') {
-    moonPath.style.opacity  = '0';
+    moonPath.style.opacity = '0';
     sunCircle.style.opacity = '1';
-    sunRays.style.opacity   = '1';
-    themeLabel.textContent  = 'Light Mode';
+    sunRays.style.opacity = '1';
+    themeLabel.textContent = 'Light Mode';
     themeBtn.setAttribute('aria-label', 'Switch to light mode');
   } else {
     sunCircle.style.opacity = '0';
-    sunRays.style.opacity   = '0';
-    moonPath.style.opacity  = '1';
-    themeLabel.textContent  = 'Dark Mode';
+    sunRays.style.opacity = '0';
+    moonPath.style.opacity = '1';
+    themeLabel.textContent = 'Dark Mode';
     themeBtn.setAttribute('aria-label', 'Switch to dark mode');
   }
 }
@@ -60,8 +60,8 @@ function applyThemeIcon(theme) {
    THEME TOGGLE — morphing moon ↔ sun
    ============================================================ */
 function toggleTheme() {
-  const html     = document.documentElement;
-  const isDark   = html.getAttribute('data-theme') === 'dark';
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
   const newTheme = isDark ? 'light' : 'dark';
 
   html.setAttribute('data-theme', newTheme);
@@ -70,22 +70,22 @@ function toggleTheme() {
   /* Spin SVG */
   const svg = document.getElementById('theme-icon-svg');
   svg.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
-  svg.style.transform  = 'rotate(180deg)';
+  svg.style.transform = 'rotate(180deg)';
   setTimeout(() => { svg.style.transform = 'rotate(360deg)'; }, 250);
   setTimeout(() => { svg.style.transform = 'rotate(0deg)'; svg.style.transition = 'none'; }, 500);
 
   /* Add transitions only during toggle */
-  const moonPath  = document.getElementById('moon-path');
+  const moonPath = document.getElementById('moon-path');
   const sunCircle = document.getElementById('sun-circle');
-  const sunRays   = document.getElementById('sun-rays');
+  const sunRays = document.getElementById('sun-rays');
   if (isDark) {
     sunCircle.style.transition = 'opacity 0.3s ease';
-    sunRays.style.transition   = 'opacity 0.3s ease';
-    moonPath.style.transition  = 'opacity 0.3s ease 0.15s';
+    sunRays.style.transition = 'opacity 0.3s ease';
+    moonPath.style.transition = 'opacity 0.3s ease 0.15s';
   } else {
-    moonPath.style.transition  = 'opacity 0.3s ease';
+    moonPath.style.transition = 'opacity 0.3s ease';
     sunCircle.style.transition = 'opacity 0.3s ease 0.15s';
-    sunRays.style.transition   = 'opacity 0.3s ease 0.2s';
+    sunRays.style.transition = 'opacity 0.3s ease 0.2s';
   }
 
   applyThemeIcon(newTheme);
@@ -101,9 +101,9 @@ const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$
 function decodeText(element, finalText, duration, startDelay) {
   /* duration: total ms to resolve all characters
      Each character gets an equal time slice */
-  const totalChars  = finalText.length;
+  const totalChars = finalText.length;
   const timePerChar = duration / totalChars;
-  let   resolved    = 0;
+  let resolved = 0;
 
   setTimeout(() => {
     /* Scramble phase — rapid random character cycling */
@@ -167,6 +167,46 @@ window.addEventListener('DOMContentLoaded', () => {
   applyThemeIcon(document.documentElement.getAttribute('data-theme') || 'dark');
 
   /* ============================================================
+     NAVIGATION TOGGLE — Mobile hamburger menu
+     ============================================================ */
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+
+  if (navToggle && navLinks) {
+    navToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+
+    /* Close menu when a link is clicked */
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+      });
+    });
+
+    /* Close menu when clicking outside */
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('#navbar')) {
+        navLinks.classList.remove('active');
+      }
+    });
+  }
+
+  /* ============================================================
+     NAVBAR SCROLL EFFECT — adds scrolled class on scroll
+     ============================================================ */
+  const navbar = document.getElementById('navbar');
+  if (navbar) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+  }
+
+  /* ============================================================
      SECTION ENTRANCE — re-animates content every time a section
      enters the viewport, whether scrolling down or back up.
      ============================================================ */
@@ -176,7 +216,7 @@ window.addEventListener('DOMContentLoaded', () => {
     entries.forEach(entry => {
       const sec = entry.target;
       const revealEls = sec.querySelectorAll('.reveal, .reveal-left, .reveal-right');
-      const eyebrow   = sec.querySelector('.section-eyebrow');
+      const eyebrow = sec.querySelector('.section-eyebrow');
 
       if (entry.isIntersecting) {
         sec.classList.add('section-visible');
@@ -255,7 +295,7 @@ window.addEventListener('DOMContentLoaded', () => {
    Spawns code snippets at cursor position on an interval so
    they keep firing even when the mouse isn't moving.
    Blocked inside the dock (nav) and code card.
-   ============================================================ */
+   
 (function () {
   const SNIPPETS = [
     'const', 'int', 'void', '=>', '{}', '[]', '()',
@@ -266,13 +306,13 @@ window.addEventListener('DOMContentLoaded', () => {
     'ALTER TABLE', 'JOIN', 'rgb()',
   ];
 
-  /* Blocked zones — trail won't spawn inside these selectors */
+  / Blocked zones — trail won't spawn inside these selectors /
   const BLOCKED = ['.dock', '.hero-right', '.code-card'];
 
   let mouseX = null;
   let mouseY = null;
 
-  /* Track cursor position */
+  / Track cursor position /
   document.addEventListener('mousemove', (e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
@@ -289,7 +329,7 @@ window.addEventListener('DOMContentLoaded', () => {
     return false;
   }
 
-  /* Spawn on interval — fires even when mouse isn't moving */
+  / Spawn on interval — fires even when mouse isn't moving /
   setInterval(() => {
     if (mouseX === null || isBlocked(mouseX, mouseY)) return;
 
@@ -305,6 +345,7 @@ window.addEventListener('DOMContentLoaded', () => {
     el.addEventListener('animationend', () => el.remove());
   }, 120);
 })();
+============================================================ */
 
 
 /* ============================================================
@@ -322,7 +363,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.scrollTo({ top, behavior: "smooth" });
     history.pushState(null, "", "#contact");
   });
-}); 
+});
 
 /* ============================================================
    FOOTER WORD CYCLE
@@ -396,3 +437,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+/* ============================================================
+   CROSS-PAGE SCROLL TO TOP
+   When navigating back from resume.html, scroll to pixel 0.
+   ============================================================ */
+(function () {
+  if (sessionStorage.getItem('scrollToTop')) {
+    sessionStorage.removeItem('scrollToTop');
+    /* Disable browser scroll restoration so it doesn't override us */
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    /* Double rAF ensures layout is settled before scrolling */
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      });
+    });
+  }
+})();
