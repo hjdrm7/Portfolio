@@ -1810,8 +1810,9 @@ main {
 /* On hover: slide left by 50% of its own width to center over the card.
    No size change — pure translation. */
 .proj-card:has(.proj-right:hover) .proj-preview {
-  transform: scale(1.2) translateX(-50%) translateY(-65px);
+  transform: scale(1.2) translateX(-50%) translateY(-50px);
   border-radius: 16px;
+  height: 89.5%;
   box-shadow: 0 0 0 1px rgba(96, 165, 250, .75),
     0 32px 90px rgba(59, 130, 246, 0.15);
 }
