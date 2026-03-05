@@ -1793,6 +1793,7 @@ main {
   overflow: hidden;
   background: #0a1020;
   border-radius: 18px 0 18px 0;
+  border: 1px solid rgba(99, 140, 255, 0.18);
   transform: scale(1.2);
   transform-origin: top left;
   transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
